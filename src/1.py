@@ -31,7 +31,7 @@ def __(md):
 @app.cell
 def __(ui):
     input_path = ui.text(
-        value="data/1/input.txt",
+        value="data/input1.txt",
         label="Input text path: ")
     input_path
     return (input_path,)
