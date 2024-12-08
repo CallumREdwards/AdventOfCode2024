@@ -9,10 +9,8 @@ def __():
     import marimo as mo
     from marimo import ui
     from marimo import md
-
-    import polars as pl
     from typing import TypeVar
-    return TypeVar, md, mo, pl, ui
+    return TypeVar, md, mo, ui
 
 
 @app.cell
@@ -95,9 +93,7 @@ def __(md):
 
 @app.cell
 def __():
-    Report = list[int]
-
-    def is_safe(report: Report) -> bool:
+    def is_safe(report: list[int]) -> bool:
         if len(report) < 2:
             return True
 
@@ -118,7 +114,7 @@ def __():
             previous_level = current_level
 
         return True
-    return Report, is_safe
+    return (is_safe,)
 
 
 @app.cell
@@ -146,8 +142,8 @@ def __(md):
 
 
 @app.cell
-def __(Report, is_safe):
-    def is_safe_tolerable(report: Report) -> bool:
+def __(is_safe):
+    def is_safe_tolerable(report: list[int]) -> bool:
          return any( 
             True
             for i in range(len(report))
