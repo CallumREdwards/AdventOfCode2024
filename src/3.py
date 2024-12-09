@@ -52,7 +52,7 @@ def __(md):
 def __(re):
     def sum_mults(input: str) -> int:
         matches = re.findall(r'mul\((\d+),(\d+)\)', input)
-        return sum(int(m[0]) * int(m[1]) for m in matches)
+        return sum(int(m1) * int(m2) for m1, m2 in matches)
     return (sum_mults,)
 
 
@@ -66,17 +66,6 @@ def __(data, md, sum_mults):
 def __(md):
     md("##Part 2")
     return
-
-
-@app.cell
-def __(data, mo):
-    def split_text(text: str) -> list[str]:
-        import re
-        pattern = r"do\(\)|don't\(\)"
-        return re.split(pattern, text)
-
-    mo.vstack(split_text(data)[:3])
-    return (split_text,)
 
 
 @app.cell
