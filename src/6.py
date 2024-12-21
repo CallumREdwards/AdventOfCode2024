@@ -11,7 +11,8 @@ def __():
     from marimo import md
     from dataclasses import dataclass
     import numpy as np
-    return dataclass, md, mo, np, ui
+    import copy
+    return copy, dataclass, md, mo, np, ui
 
 
 @app.cell
@@ -27,14 +28,14 @@ def __(md):
 
 
 @app.cell
-def __(dataclass, np):
+def __(copy, dataclass, np):
     @dataclass
     class Map:
         _data: list[list[bool]]
 
         def __init__(self, lines: list[str]):
             self._data = [[x == "#" for x in line] for line in lines]
-            
+
         @property
         def width(self) -> int:
             return len(self._data[0])
@@ -46,12 +47,17 @@ def __(dataclass, np):
         def is_blocked(self, pos: np.Array) -> bool:
             col, row = pos
             return self._data[row][col]
+
+        def fill_cell(self, x: int, y: int) -> Map:
+            new_map = copy.deepcopy(self)
+            new_map._data[y][x] = True
+            return new_map
     return (Map,)
 
 
 @app.cell
 def __(Map, md, np):
-    with open("data/sample6.txt") as f:
+    with open("data/input6.txt") as f:
         lines = f.readlines()
 
     map = Map(lines)
@@ -91,7 +97,7 @@ def __(map, np):
         while -1 not in updated_position and \
            updated_position[0] != map.width and \
            updated_position[1] != map.height:
-            
+
            if map.is_blocked(updated_position):
                direction = rotation_matrix @ direction
            else:
@@ -117,31 +123,33 @@ def __(md):
 
 
 @app.cell
-def __(map, np, rotation_matrix):
+def __(guard_position, map, np, rotation_matrix):
     def creates_loop(x: int, y: int) -> bool:
+        updated_map = map.fill_cell(x, y)
+        
         direction = np.array([0, -1])
-        position = np.array([x, y])
-        visited = {tuple(position)}
+        position = guard_position
+        visited = set()
 
         updated_position = position + direction
 
         while -1 not in updated_position and \
-           updated_position[0] != map.width and \
-           updated_position[1] != map.height:
+            updated_position[0] != map.width and \
+            updated_position[1] != map.height:
             
-           if map.is_blocked(updated_position):
+            if (tuple(position), tuple(direction)) in visited:
+               return True
+            visited.add((tuple(position), tuple(direction)))
+            
+            if updated_map.is_blocked(updated_position):
                direction = rotation_matrix @ direction
-           else:
+            else:
                position = updated_position
-               if tuple(position) in visited:
-                   print(f"({x},{y})")
-                   return True
-               visited.add(tuple(position))
-
-
-           updated_position = position + direction
+            
+            updated_position = position + direction
 
         return False
+
     return (creates_loop,)
 
 
