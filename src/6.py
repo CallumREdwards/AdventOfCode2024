@@ -1,11 +1,11 @@
 import marimo
 
-__generated_with = "0.9.30"
+__generated_with = "0.10.6"
 app = marimo.App(width="medium")
 
 
 @app.cell
-def __():
+def _():
     import marimo as mo
     from marimo import ui
     from marimo import md
@@ -16,19 +16,19 @@ def __():
 
 
 @app.cell
-def __(md):
-    md("Day 6: Guard Gallivant")
+def _(md):
+    md("#Day 6: Guard Gallivant")
     return
 
 
 @app.cell
-def __(md):
+def _(md):
     md("##Getting data")
     return
 
 
 @app.cell
-def __(copy, dataclass, np):
+def _(copy, dataclass, np):
     @dataclass
     class Map:
         _data: list[list[bool]]
@@ -56,7 +56,7 @@ def __(copy, dataclass, np):
 
 
 @app.cell
-def __(Map, md, np):
+def _(Map, md, np):
     with open("data/input6.txt") as f:
         lines = f.readlines()
 
@@ -72,7 +72,7 @@ def __(Map, md, np):
 
 
 @app.cell
-def __(map, mo):
+def _(map, mo):
     mo.vstack(
         mo.hstack(line) for line in map._data
     )
@@ -80,13 +80,13 @@ def __(map, mo):
 
 
 @app.cell
-def __(md):
+def _(md):
     md("##Part 1")
     return
 
 
 @app.cell
-def __(map, np):
+def _(map, np):
     rotation_matrix = np.array([[0, -1], [1, 0]])
 
     def walk_count(position: np.ndarray) -> int:
@@ -111,22 +111,22 @@ def __(map, np):
 
 
 @app.cell
-def __(guard_position, md, walk_count):
+def _(guard_position, md, walk_count):
     md(f"Answer = {walk_count(guard_position)}")
     return
 
 
 @app.cell
-def __(md):
+def _(md):
     md("##Part 2")
     return
 
 
 @app.cell
-def __(guard_position, map, np, rotation_matrix):
+def _(guard_position, map, np, rotation_matrix):
     def creates_loop(x: int, y: int) -> bool:
         updated_map = map.fill_cell(x, y)
-        
+
         direction = np.array([0, -1])
         position = guard_position
         visited = set()
@@ -136,25 +136,24 @@ def __(guard_position, map, np, rotation_matrix):
         while -1 not in updated_position and \
             updated_position[0] != map.width and \
             updated_position[1] != map.height:
-            
+
             if (tuple(position), tuple(direction)) in visited:
                return True
             visited.add((tuple(position), tuple(direction)))
-            
+
             if updated_map.is_blocked(updated_position):
                direction = rotation_matrix @ direction
             else:
                position = updated_position
-            
+
             updated_position = position + direction
 
         return False
-
     return (creates_loop,)
 
 
 @app.cell
-def __(creates_loop, guard_position, map, md):
+def _(creates_loop, guard_position, map, md):
     result2 = sum(
         1
         for x in range(map.width)
