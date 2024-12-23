@@ -14,13 +14,13 @@ def _():
 
 @app.cell
 def _(mo):
-    mo.md("#Day 8: Resonant Collinearity")
+    mo.md("""#Day 8: Resonant Collinearity""")
     return
 
 
 @app.cell
 def _(mo):
-    mo.md("##Getting data")
+    mo.md("""##Getting data""")
     return
 
 
@@ -73,11 +73,6 @@ def _(mo):
 
 
 @app.cell
-def _():
-    return
-
-
-@app.cell
 def _(Map, input_or_sample, mo):
     if input_or_sample.value == "file":
         with open("data/input8.txt") as f:
@@ -105,7 +100,7 @@ def _(Map, input_or_sample, mo):
 
 @app.cell
 def _(mo):
-    mo.md("##Part 1")
+    mo.md("""##Part 1""")
     return
 
 
@@ -132,7 +127,7 @@ def _(Coordinates, map, mo, np):
 
 @app.cell
 def _(mo):
-    mo.md("##Part 2")
+    mo.md("""##Part 2""")
     return
 
 
