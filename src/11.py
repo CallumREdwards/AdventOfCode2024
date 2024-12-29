@@ -14,13 +14,13 @@ def _():
 
 @app.cell
 def _(mo):
-    mo.md("#Day 11: Plutonian Pebbles")
+    mo.md("""#Day 11: Plutonian Pebbles""")
     return
 
 
 @app.cell
 def _(mo):
-    mo.md("##Getting data")
+    mo.md("""##Getting data""")
     return
 
 
@@ -57,14 +57,14 @@ def _(Generator):
             if stone == 0:
                 yield 1
                 continue
-                
+
             str_stone = str(stone)
             if len(str_stone) % 2 == 0:
                 mid = len(str_stone) // 2
                 yield int(str_stone[:mid])
                 yield int(str_stone[mid:])
             else:
-                yield stone * 2024            
+                yield stone * 2024
     return (next_blink,)
 
 
